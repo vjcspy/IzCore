@@ -6,7 +6,7 @@
  * Time: 18:01
  */
 
-namespace modules\IzCore\Http\Controllers\API;
+namespace Modules\IzCore\Http\Controllers\Api;
 
 use Pingpong\Modules\Routing\Controller;
 use Illuminate\Http\Request;
@@ -78,8 +78,8 @@ abstract class BasicController extends Controller {
         return Response::json($this->_responseData, $this->_responseCode);
     }
 
-    public function setErrorData($error) {
-        $this->setResponseCode(self::STATUS_BAD_REQUEST);
+    public function setErrorData($error, $status = self::STATUS_BAD_REQUEST) {
+        $this->setResponseCode($status);
         $this->_responseData = [
             'error' => true,
             'mess'  => $error
