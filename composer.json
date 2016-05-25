@@ -1,5 +1,6 @@
 {
   "name": "laravel-pingpong-modules/izcore",
+  "vendor":"laravel-pingpong-modules",
   "type": "laravel-pingpong-modules",
   "description": "",
   "authors": [
@@ -9,8 +10,7 @@
     }
   ],
   "require": {
-    "php": ">=5.5.9",
-    "composer/installers": "~1.0"
+    "php": ">=5.5.9"
   },
   "autoload": {
     "psr-4": {
@@ -20,7 +20,7 @@
   "extra": {
     "installer-name": "IzCore",
     "installer-paths": {
-      "/modules/{$name}": ["laravel-pingpong-modules/izcore"]
+      "modules/{$name}":["vendor:laravel-pingpong-modules"]
     }
   },
   "minimum-stability": "dev"
