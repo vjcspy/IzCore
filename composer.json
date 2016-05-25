@@ -21,8 +21,8 @@
   "extra": {
     "installer-name": "IzCore",
     "installer-paths": {
-      "modules/{$name}/":["type:magento-library"]
-    }
+            "your/custom/path/{$name}/": ["type:magento-library"]
+        }
   },
   "minimum-stability": "dev"
 }
