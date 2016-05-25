@@ -1,7 +1,7 @@
 {
   "name": "laravel-pingpong-modules/izcore",
   "vendor":"laravel-pingpong-modules",
-  "type": "laravel-pingpong-module",
+  "type": "magento-library",
   "description": "",
   "authors": [
     {
@@ -21,7 +21,7 @@
   "extra": {
     "installer-name": "IzCore",
      "installer-paths": {
-            "modules/{$name}/": ["vendor:laravel-pingpong-modules"]
+            "modules/{$name}/": ["type:magento-library"]
         }
   },
   "minimum-stability": "dev"
