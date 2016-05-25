@@ -20,10 +20,9 @@
     }
   },
   "extra": {
+    "installer-name": "IzCore",
     "installer-paths": {
-      "modules/{$name}": [
-        "type:laravel-pingpong-modules"
-      ]
+      "modules/{$name}": ["vendor:laravel-pingpong-modules"]
     }
   }
 }
