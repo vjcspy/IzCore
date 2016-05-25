@@ -19,7 +19,10 @@
     }
   },
   "extra": {
-    "installer-name": "IzCore"
+    "installer-name": "IzCore",
+     "installer-paths": {
+            "modules/{$name}/": ["type:laravel-pingpong-module"]
+        }
   },
   "minimum-stability": "dev"
 }
