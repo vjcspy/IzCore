@@ -9,10 +9,7 @@
     }
   ],
   "require": {
-    "php": ">=5.5.9",
-    "laravel/framework": "5.2.*",
-    "pingpong/modules": "~2.0",
-    "composer/installers": "~1.0"
+    "php": ">=5.5.9"
   },
   "autoload": {
     "psr-4": {
