@@ -9,7 +9,8 @@
     }
   ],
   "require": {
-    "php": ">=5.5.9"
+    "php": ">=5.5.9",
+    "composer/installers": "~1.0"
   },
   "autoload": {
     "psr-4": {
@@ -19,7 +20,7 @@
   "extra": {
     "installer-name": "IzCore",
     "installer-paths": {
-      "modules/{$name}": ["laravel-pingpong-modules/izcore"]
+      "/modules/{$name}": ["laravel-pingpong-modules/izcore"]
     }
   },
   "minimum-stability": "dev"
