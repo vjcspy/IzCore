@@ -99,7 +99,5 @@ class IzCoreServiceProvider extends ServiceProvider {
     }
 
     public function registerDependencyLibrary() {
-        /*Sentinel*/
-        $this->app->register(\Cartalyst\Sentinel\Laravel\SentinelServiceProvider::class);
     }
 }
