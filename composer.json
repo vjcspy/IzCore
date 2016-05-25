@@ -11,7 +11,7 @@
   ],
   "require": {
     "php": ">=5.5.9",
-    "teepluss/theme": "dev",
+    "teepluss/theme": "^2.0",
     "composer/installers": "^1.0"
   },
   "autoload": {
