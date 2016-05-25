@@ -21,5 +21,6 @@
     "installer-paths": {
       "modules/{$name}": ["laravel-pingpong-modules/izcore"]
     }
-  }
+  },
+  "minimum-stability": "dev"
 }
