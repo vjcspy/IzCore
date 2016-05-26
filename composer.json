@@ -13,7 +13,7 @@
     "php": ">=5.5.9",
     "teepluss/theme": "^2.0",
     "composer/installers": "^1.0",
-    "dingo/api": "^1.0.0"
+    "dingo/api": "dev-master"
   },
   "autoload": {
     "psr-4": {
