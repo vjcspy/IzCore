@@ -48,7 +48,7 @@ return array(
 	|
 	*/
 
-	'themeDir' => 'themes',
+	'themeDir' => 'modules/themes',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -96,7 +96,7 @@ return array(
 		// Before all event, this event will effect for global.
 		'before' => $serializer->serialize(function($theme)
 		{
-			//$theme->setTitle('Something in global.');
+			$theme->setTitle('Copyright ©  2013 - created by vjcspy');
 		}),
 
 		// This event will fire as a global you can add any assets you want here.
