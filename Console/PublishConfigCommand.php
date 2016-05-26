@@ -34,6 +34,12 @@ class PublishConfigCommand extends Command {
      * @return mixed
      */
     public function fire() {
+        /*--------------------------- Publish config/asset/view of module ---------------------------*/
+        $this->output->writeln('--------------------------- Publish modules files ---------------------------');
+        $this->call('module:publish');
+
+        /*--------------------------- Publish vendor config ---------------------------*/
+        $this->output->writeln('--------------------------- Publish vendor config ---------------------------');
         $pathModules = Module::getPath();
 
         $moduleDirs = scandir($pathModules);
