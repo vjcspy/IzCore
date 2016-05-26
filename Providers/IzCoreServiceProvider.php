@@ -12,6 +12,11 @@ class IzCoreServiceProvider extends ServiceProvider {
      */
     protected $defer = false;
 
+    protected $commands
+        = [
+            'Modules\IzCore\Console\PublishConfigCommand'
+        ];
+
     /**
      * Boot the application events.
      *
@@ -21,7 +26,6 @@ class IzCoreServiceProvider extends ServiceProvider {
         $this->registerTranslations();
         $this->registerConfig();
         $this->registerViews();
-        $this->registerArtisanCommand();
     }
 
     /**
@@ -31,6 +35,9 @@ class IzCoreServiceProvider extends ServiceProvider {
      */
     public function register() {
         $this->registerDependencyLibrary();
+
+        /*Register command izCore*/
+        $this->commands($this->commands);
     }
 
     /**
@@ -101,13 +108,8 @@ class IzCoreServiceProvider extends ServiceProvider {
     }
 
     public function registerDependencyLibrary() {
-        /*Teeplus theme*/
         $this->app->register('\Teepluss\Theme\ThemeServiceProvider');
-        
-        
-    }
-
-    public function registerArtisanCommand() {
-        Artisan::registerCommand($this->app->make('\Modules\IzCore\Console\PublishConfigCommand'));
+        $this->app->register('\Pingpong\Menus\MenusServiceProvider');
+        $this->app->register('\Intervention\Image\ImageServiceProvider');
     }
 }
