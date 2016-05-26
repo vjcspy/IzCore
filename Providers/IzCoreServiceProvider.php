@@ -1,6 +1,7 @@
-<?php namespace Modules\Izcore\Providers;
+<?php namespace Modules\IzCore\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Artisan;
 
 class IzCoreServiceProvider extends ServiceProvider {
 
@@ -20,6 +21,7 @@ class IzCoreServiceProvider extends ServiceProvider {
         $this->registerTranslations();
         $this->registerConfig();
         $this->registerViews();
+        $this->registerArtisanCommand();
     }
 
     /**
@@ -101,5 +103,11 @@ class IzCoreServiceProvider extends ServiceProvider {
     public function registerDependencyLibrary() {
         /*Teeplus theme*/
         $this->app->register('\Teepluss\Theme\ThemeServiceProvider');
+        
+        
+    }
+
+    public function registerArtisanCommand() {
+        Artisan::registerCommand($this->app->make('\Modules\IzCore\Console\PublishConfigCommand'));
     }
 }
