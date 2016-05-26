@@ -12,6 +12,7 @@
   "require": {
     "php": ">=5.5.9",
     "teepluss/theme": "^2.0",
+    "dingo/api": "1.0.*@dev",
     "composer/installers": "^1.0"
   },
   "autoload": {

@@ -99,5 +99,7 @@ class IzCoreServiceProvider extends ServiceProvider {
     }
 
     public function registerDependencyLibrary() {
+        /*Teeplus theme*/
+        $this->app->register('\Teepluss\Theme\ThemeServiceProvider');
     }
 }
