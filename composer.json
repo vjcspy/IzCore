@@ -13,7 +13,7 @@
     "php": ">=5.5.9",
     "teepluss/theme": "^2.0",
     "composer/installers": "^1.0",
-    "dingo/api": "1.0.*@dev",
+    "dingo/api": "^0.10.0",
     "intervention/image": "^2.3",
     "pingpong/menus": "^2.2"
 
