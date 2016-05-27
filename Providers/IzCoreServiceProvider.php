@@ -12,9 +12,24 @@ class IzCoreServiceProvider extends ServiceProvider {
      */
     protected $defer = false;
 
+    /**
+     * Register Command
+     *
+     * @var array
+     */
     protected $commands
         = [
             'Modules\IzCore\Console\PublishConfigCommand'
+        ];
+
+    /**
+     * Register Alias
+     *
+     * @var array
+     */
+    protected $aliases
+        = [
+            'Theme' => 'Teepluss\Theme\Facades\Theme'
         ];
 
     /**
@@ -26,6 +41,9 @@ class IzCoreServiceProvider extends ServiceProvider {
         $this->registerTranslations();
         $this->registerConfig();
         $this->registerViews();
+        
+        /*Register alias*/
+        $this->registerAlias();
     }
 
     /**
@@ -38,6 +56,7 @@ class IzCoreServiceProvider extends ServiceProvider {
 
         /*Register command izCore*/
         $this->commands($this->commands);
+
     }
 
     /**
@@ -111,5 +130,12 @@ class IzCoreServiceProvider extends ServiceProvider {
         $this->app->register('\Teepluss\Theme\ThemeServiceProvider');
         $this->app->register('\Pingpong\Menus\MenusServiceProvider');
         $this->app->register('\Intervention\Image\ImageServiceProvider');
+    }
+
+    public function registerAlias() {
+        $loader = \Illuminate\Foundation\AliasLoader::getInstance();
+        foreach ($this->aliases as $key => $alias) {
+            $loader->alias($key, $alias);
+        }
     }
 }
