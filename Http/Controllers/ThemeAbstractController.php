@@ -10,6 +10,7 @@ namespace Modules\IzCore\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\IzCore\Repositories\Theme as izTheme;
 use Modules\IzCore\Repositories\Theme\Asset;
 use Modules\IzCore\Repositories\Theme\View;
 use Teepluss\Theme\Contracts\Theme;
@@ -42,23 +43,30 @@ abstract class ThemeAbstractController extends Controller {
      * @var $_viewData []
      */
     protected $_viewData;
+    /**
+     * @var \Modules\IzCore\Repositories\Theme
+     */
+    protected $izTheme;
 
     /**
      * @param \Teepluss\Theme\Contracts\Theme          $theme
      * @param \Illuminate\Http\Request                 $request
      * @param \Modules\IzCore\Repositories\Theme\Asset $izAsset
      * @param \Modules\IzCore\Repositories\Theme\View  $izView
+     * @param \Modules\IzCore\Repositories\Theme       $izTheme
      */
     public function __construct(
         Theme $theme,
         Request $request,
         Asset $izAsset,
-        View $izView
+        View $izView,
+        izTheme $izTheme
     ) {
         $this->theme   = $theme;
         $this->request = $request;
         $this->izAsset = $izAsset;
         $this->izView  = $izView;
+        $this->izTheme = $izTheme;
     }
 
     /**
@@ -99,6 +107,9 @@ abstract class ThemeAbstractController extends Controller {
         // merger view data from another modules
         $this->izView->initAdditionViews($this->_viewData, $path);
 
+        // merge theme data from another modules
+        $this->izTheme->initViewData($this->theme, $path);
+
         // get view name
         $viewFile = debug_backtrace()[1]['function'];
 
@@ -123,6 +134,21 @@ abstract class ThemeAbstractController extends Controller {
      */
     protected function setViewData($viewData) {
         $this->_viewData = $viewData;
+    }
+
+    /**
+     * Add data to theme
+     *
+     * @param $data
+     *
+     * @return $this
+     */
+    protected function setThemeData($data) {
+        foreach ($data as $k => $item) {
+            $this->theme->set($k, $item);
+        }
+
+        return $this;
     }
 
 }

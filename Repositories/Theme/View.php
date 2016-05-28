@@ -81,6 +81,21 @@ class View extends DataObject {
     }
 
     /**
+     * Dành cho các module ngoài muốn add data vào 1 path nào đó
+     *
+     * @param $path
+     * @param $data
+     */
+    public function addAdditionData($path, $data) {
+        foreach ($data as $item) {
+            if (!isset($this->viewsData[$path]))
+                $this->viewsData[$path] = [];
+
+            $this->viewsData[$path][] = $item;
+        }
+    }
+
+    /**
      * Merge data from another module to current view
      *
      * @param $viewData
