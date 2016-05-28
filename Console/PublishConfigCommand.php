@@ -66,6 +66,19 @@ class PublishConfigCommand extends Command {
                 }
             }
         }
+
+        /*--------------------------- Publish theme of module ---------------------------*/
+        $this->output->writeln('--------------------------- Publish themes directory ---------------------------');
+        foreach ($moduleDirs as $moduleDir) {
+            if (!in_array($moduleDir, [".", ".."])) {
+                $currentThemeDir = $pathModules . '/' . $moduleDir . '/themes';
+
+                if (!file_exists($currentThemeDir))
+                    continue;
+
+                $this->recurseCopy($currentThemeDir, public_path() . '/modules/themes');
+            }
+        }
     }
 
     /**
@@ -88,5 +101,24 @@ class PublishConfigCommand extends Command {
         return [
             ['example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null],
         ];
+    }
+
+    protected function recurseCopy($src, $dst) {
+        $dir = opendir($src);
+        @mkdir($dst);
+        while (false !== ($file = readdir($dir))) {
+            if (($file != '.') && ($file != '..')) {
+                if (is_dir($src . '/' . $file)) {
+                    $this->recurseCopy($src . '/' . $file, $dst . '/' . $file);
+                }
+                else {
+                    $s = $src . '/' . $file;
+                    $d = $dst . '/' . $file;
+                    copy($s, $d);
+                    $this->output->success('Copy file: ' . $s);
+                }
+            }
+        }
+        closedir($dir);
     }
 }
