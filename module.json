@@ -1,15 +1,16 @@
 {
-    "name": "IzCore",
-    "alias": "izcore",
-    "description": "",
-    "keywords": [],
-    "active": 1,
-    "order": 0,
-    "providers": [
-        "Modules\\IzCore\\Providers\\IzCoreServiceProvider"
-    ],
-    "aliases":{},
-    "files": [
-        "start.php"
-    ]
+  "name": "IzCore",
+  "alias": "izcore",
+  "description": "",
+  "keywords": [],
+  "active": 1,
+  "order": 0,
+  "providers": [
+    "Modules\\IzCore\\Providers\\IzCoreServiceProvider",
+    "Modules\\IzCore\\Providers\\IzThemeServiceProvider"
+  ],
+  "aliases": {},
+  "files": [
+    "start.php"
+  ]
 }

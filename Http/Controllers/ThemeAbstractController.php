@@ -8,7 +8,10 @@
 
 namespace Modules\IzCore\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\IzCore\Repositories\Theme\Asset;
+use Modules\IzCore\Repositories\Theme\View;
 use Teepluss\Theme\Contracts\Theme;
 
 /**
@@ -24,19 +27,102 @@ abstract class ThemeAbstractController extends Controller {
     protected $theme;
 
     /**
-     * ThemeAbstractController constructor.
-     *
-     * @param \Teepluss\Theme\Contracts\Theme $theme
+     * @var \Illuminate\Http\Request
      */
-    public function __construct(Theme $theme) {
-        $this->theme = $theme->uses('default')->layout('default');
+    protected $request;
+    /**
+     * @var \Modules\IzCore\Repositories\Theme\Asset
+     */
+    protected $izAsset;
+    /**
+     * @var \Modules\IzCore\Repositories\Theme\View
+     */
+    protected $izView;
+    /**
+     * @var $_viewData []
+     */
+    protected $_viewData;
+
+    /**
+     * @param \Teepluss\Theme\Contracts\Theme          $theme
+     * @param \Illuminate\Http\Request                 $request
+     * @param \Modules\IzCore\Repositories\Theme\Asset $izAsset
+     * @param \Modules\IzCore\Repositories\Theme\View  $izView
+     */
+    public function __construct(
+        Theme $theme,
+        Request $request,
+        Asset $izAsset,
+        View $izView
+    ) {
+        $this->theme   = $theme;
+        $this->request = $request;
+        $this->izAsset = $izAsset;
+        $this->izView  = $izView;
     }
 
+    /**
+     * @param $layout
+     *
+     * @return $this
+     */
     public function setLayout($layout) {
         $this->theme->layout($layout);
+
+        return $this;
     }
 
+    /**
+     * @param $theme
+     *
+     * @return $this
+     */
     public function setTheme($theme) {
         $this->theme->uses($theme);
+
+        return $this;
     }
+
+    /**
+     * Inject view and asset from another modules
+     *
+     * @return \Illuminate\Http\Response
+     * @throws \Exception
+     *
+     */
+    public function renderHtml() {
+        $path = $this->request->path();
+
+        // get addition assets from another modules
+        $this->izAsset->setTheme($this->theme)->setCurrentPath($path)->initAdditionAssets()->initAssets($this->theme);
+
+        // merger view data from another modules
+        $this->izView->initAdditionViews($this->_viewData, $path);
+
+        // get view name
+        $viewFile = debug_backtrace()[1]['function'];
+
+        return $this->theme->scopeWithLayout(str_replace('/', '.', $path) . '.' . $viewFile, $this->_viewData)->render();
+    }
+
+    /**
+     * Wrap function addAssets
+     *
+     * @param $assets
+     *
+     * @return $this
+     */
+    protected function addAssets($assets) {
+        $this->izAsset->addAssets($this->request->path(), $assets);
+
+        return $this;
+    }
+
+    /**
+     * @param $viewData
+     */
+    protected function setViewData($viewData) {
+        $this->_viewData = $viewData;
+    }
+
 }
