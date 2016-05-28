@@ -121,7 +121,7 @@ class Asset extends DataObject {
     }
 
     /**
-     * Dành cho các module bên ngoài muốn thêm assets vào controller hiện tại
+     * Merge assets from another modules to current asset
      *
      * @param                       $path
      *
