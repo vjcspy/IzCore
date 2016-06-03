@@ -44,8 +44,13 @@ class Module extends DataObject {
      * Get all assets from all modules
      *
      * @return array
+     * @throws \Exception
      */
     public function getAssets() {
+
+        if (!isset($isSupport))
+            throw new \Exception('Please get From Theme');
+
         if (is_null($this->assets)) {
 
             $this->assets = [];

@@ -11,6 +11,7 @@ namespace Modules\IzCore\Repositories;
 
 use Modules\IzCore\Repositories\Object\DataObject;
 use Modules\IzCore\Repositories\Theme\View\AdditionView;
+use Module;
 
 class Theme extends DataObject {
 
@@ -35,6 +36,13 @@ class Theme extends DataObject {
      * @var array
      */
     protected $data = [];
+
+    /**
+     * All Asset
+     *
+     * @var
+     */
+    private $assets;
 
     public function __construct(array $data = []) {
         parent::__construct($data);
@@ -118,5 +126,50 @@ class Theme extends DataObject {
         }
 
         return $this;
+    }
+
+    public function getAssetsTree() {
+        if (is_null($this->assets)) {
+            $this->assets = [];
+
+            $pathModules = Module::getPath();
+            $moduleDirs  = scandir($pathModules);
+            foreach ($moduleDirs as $moduleDir) {
+                if (!in_array($moduleDir, [".", ".."])) {
+                    /*Path Config/Vendor của module hiện tại*/
+                    $currentModuleThemePaths = $pathModules . '/' . $moduleDir . '/themes';
+
+                    /*Kiểm tra xem module hiện tại có thư mục themes không*/
+                    if (!file_exists($currentModuleThemePaths))
+                        continue;
+
+                    $themePath = scandir($currentModuleThemePaths);
+
+                    foreach ($themePath as $themDir) {
+                        if (!in_array($themDir, [".", ".."])) {
+                            $currentThemeDir = $currentModuleThemePaths . '/' . $themDir . '/config.php';
+
+                            // Check file config.php existed
+
+                            if (!file_exists($currentThemeDir))
+                                throw new \Exception('Not found file config.php in theme: ' . $themDir . ' module: ' . $moduleDir);
+
+                            $themeConfig = (include $currentThemeDir);
+
+                            if (isset($themeConfig['assets'])) {
+                                $assetWithThemeName = [];
+                                foreach ($themeConfig['assets'] as $k => $asset) {
+                                    $asset['theme_name']    = $themDir;
+                                    $assetWithThemeName[$k] = $asset;
+                                }
+                                $this->assets = array_merge($this->assets, $assetWithThemeName);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $this->assets;
     }
 }

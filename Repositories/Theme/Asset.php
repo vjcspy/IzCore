@@ -11,6 +11,7 @@ namespace Modules\IzCore\Repositories\Theme;
 
 use Modules\IzCore\Repositories\Module;
 use Modules\IzCore\Repositories\Object\DataObject;
+use Modules\IzCore\Repositories\Theme as IzTheme;
 use Modules\IzCore\Repositories\Theme\Asset\AdditionAsset;
 use Modules\IzCore\Repositories\Theme\Asset\Dependency;
 use Pingpong\Modules\Repository;
@@ -63,6 +64,10 @@ class Asset extends DataObject {
      * @var \modules\IzCore\Repositories\Theme\Asset\Dependency
      */
     protected $izAssetDependency;
+    /**
+     * @var \Modules\IzCore\Repositories\Theme
+     */
+    protected $izTheme;
 
     /**
      * Asset constructor.
@@ -70,17 +75,20 @@ class Asset extends DataObject {
      * @param \Pingpong\Modules\Repository                        $module
      * @param \Modules\IzCore\Repositories\Module                 $izModule
      * @param \modules\IzCore\Repositories\Theme\Asset\Dependency $izAssetDependency
+     * @param \Modules\IzCore\Repositories\Theme                  $izTheme
      * @param array                                               $data
      */
     public function __construct(
         Repository $module,
         Module $izModule,
         Dependency $izAssetDependency,
+        IzTheme $izTheme,
         array $data = []
     ) {
         $this->module            = $module;
         $this->izModule          = $izModule;
         $this->izAssetDependency = $izAssetDependency;
+        $this->izTheme           = $izTheme;
         parent::__construct($data);
     }
 
@@ -195,7 +203,7 @@ class Asset extends DataObject {
         // Lấy thêm assets từ các modules khác
         $this->initAdditionAssets($this->currentPath);
 
-        $moduleAssets = $this->izModule->getAssets();
+        $moduleAssets = $this->izTheme->getAssetsTree();
 
         /*
          * TODO: Trả về thứ tự cài đặt của assets theo dependency
@@ -209,7 +217,7 @@ class Asset extends DataObject {
                 if (isset($moduleAssets[$asset]['sources']['scripts'])) {
                     /*add script*/
                     foreach ($moduleAssets[$asset]['sources']['scripts'] as $k => $script) {
-                        $theme->asset()->container('footer')->usePath()->add(
+                        $theme->asset()->container('footer')->usePath($moduleAssets[$asset]['theme_name'])->add(
                             'script-' . $asset . '-' . $k,
                             $script,
                             []);
@@ -219,7 +227,7 @@ class Asset extends DataObject {
                 if (isset($moduleAssets[$asset]['sources']['styles'])) {
                     /*add style*/
                     foreach ($moduleAssets[$asset]['sources']['styles'] as $k => $style) {
-                        $theme->asset()->usePath()->add(
+                        $theme->asset()->usePath($moduleAssets[$asset]['theme_name'])->add(
                             'style-' . $asset . '-' . $k,
                             $style,
                             []);

@@ -10,25 +10,49 @@ namespace Modules\IzCore\Repositories\Theme\Asset;
 
 
 use Modules\IzCore\Repositories\Module;
+use Modules\IzCore\Repositories\Theme;
 use Modules\IzCore\Repositories\Theme\Asset\Dependency\Node;
 
 class Dependency {
 
+    /**
+     * Luu tung dependency
+     * @var array
+     */
     protected $nodes = [];
+    /**
+     * @var \Modules\IzCore\Repositories\Module
+     */
     protected $izModule;
+
+
+    /**
+     * Thu tu dependency sau khi da load depen
+     * @var array
+     */
+    protected $resolved = [];
+    /**
+     * @var array
+     */
+    protected $unresolved = [];
+    /**
+     * @var \Modules\IzCore\Repositories\Theme
+     */
+    protected $izTheme;
+
+    public function __construct(
+        Module $izModule,
+        Theme $izTheme
+    ) {
+        $this->izModule = $izModule;
+        $this->izTheme  = $izTheme;
+    }
 
     /**
      * @return array
      */
     public function getResolved() {
         return $this->resolved;
-    }
-
-    protected $resolved = [];
-    protected $unresolved = [];
-
-    public function __construct(Module $izModule) {
-        $this->izModule = $izModule;
     }
 
     /**
@@ -88,7 +112,7 @@ class Dependency {
      * @return bool
      */
     protected function getInfoAsset($assetName) {
-        return isset($this->izModule->getAssets()[$assetName]) ? $this->izModule->getAssets()[$assetName] : false;
+        return isset($this->izTheme->getAssetsTree()[$assetName]) ? $this->izTheme->getAssetsTree()[$assetName] : false;
     }
 
     /**
@@ -99,12 +123,12 @@ class Dependency {
      */
     protected function processModuleAssetsToNode() {
         //init note
-        foreach ($this->izModule->getAssets() as $assetName => $assetInfo) {
+        foreach ($this->izTheme->getAssetsTree() as $assetName => $assetInfo) {
             $this->nodes[$assetName] = new Node($assetName);
         }
 
         //init dependency
-        foreach ($this->izModule->getAssets() as $assetName => $assetInfo) {
+        foreach ($this->izTheme->getAssetsTree() as $assetName => $assetInfo) {
 
             if (isset($assetInfo['dependency']) && is_array($assetInfo['dependency']) && count($assetInfo['dependency']) > 0)
                 foreach ($assetInfo['dependency'] as $dep) {
