@@ -151,4 +151,10 @@ abstract class ThemeAbstractController extends Controller {
         return $this;
     }
 
+    protected function addCustomAssets($customAssets) {
+        $this->izAsset->addCustomAssets($this->request->path(), $customAssets);
+
+        return $this;
+    }
+
 }

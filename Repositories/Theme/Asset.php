@@ -52,6 +52,8 @@ class Asset extends DataObject {
      */
     protected $additionAssets = [];
 
+    protected $customAssets = [];
+
     /**
      * [
      * 'path' => ['asset']
@@ -177,6 +179,31 @@ class Asset extends DataObject {
     }
 
     /**
+     * Thêm custom assets in css or js not in bower
+     *
+     * @param       $path
+     * @param array $customAssets
+     *
+     * @return mixed
+     * @throws \Exception
+     *
+     */
+    public function addCustomAssets($path, array $customAssets) {
+        if (is_null($path))
+            if (!$this->getCurrentPath())
+                throw new \Exception('Must have path');
+            else
+                $path = $this->getCurrentPath();
+        foreach ($customAssets as $customName => $customAsset) {
+            if (!isset($this->customAssets[$path]))
+                $this->customAssets[$path] = [];
+            $this->customAssets[$path][$customName] = $customAsset;
+        }
+
+        return $this->customAssets[$path];
+    }
+
+    /**
      * Thêm assets
      *
      * @param \Teepluss\Theme\Theme $theme
@@ -191,8 +218,10 @@ class Asset extends DataObject {
             $theme = $this->getTheme();
 
         if (is_null($currentPath)) {
-            if ($this->currentPath)
-                $assets = isset($this->assets[$this->currentPath]) ? $this->assets[$this->currentPath] : [];
+            if ($this->currentPath) {
+                $currentPath = $this->currentPath;
+                $assets      = isset($this->assets[$this->currentPath]) ? $this->assets[$this->currentPath] : [];
+            }
             else
                 throw new \Exception("Not found current path");
         }
@@ -209,8 +238,9 @@ class Asset extends DataObject {
          * TODO: Trả về thứ tự cài đặt của assets theo dependency
          */
         $assets = $this->izAssetDependency->processDependency($assets);
+
         /*
-         * Add asset to theme
+         * Add bower_components asset to theme
          */
         foreach ($assets as $asset) {
             if (isset($moduleAssets[$asset])) {
@@ -236,6 +266,20 @@ class Asset extends DataObject {
             }
             else {
                 throw new \Exception('Not found asset: ' . $asset);
+            }
+        }
+
+        /*
+         * Add custom asset to theme
+         * */
+        if (isset($this->customAssets[$currentPath])) {
+            foreach ($this->customAssets[$currentPath] as $customAssetName => $customAsset) {
+                $theme->asset()->usePath(isset($customAsset['theme_name']) ? $customAsset['theme_name'] : null)
+                      ->add(
+                          $customAssetName,
+                          $customAsset['source'],
+                          isset($customAsset['dependency']) ? $customAsset['dependency'] : []
+                      );
             }
         }
 
