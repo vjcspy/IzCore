@@ -14,7 +14,7 @@ return [
             'sources'     =>
                 [
                     'scripts' => ['bower_components/bootstrap/dist/js/bootstrap.min.js'],
-                    'style'   => [
+                    'styles'   => [
                         'bower_components/bootstrap/dist/css/bootstrap.min.css',
                         'bower_components/bootstrap/dist/css/bootstrap-theme.min.css'
                     ]
