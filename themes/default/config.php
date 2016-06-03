@@ -1,6 +1,27 @@
 <?php
 
-return array(
+return [
+
+    'assets' => [
+        'jquery'    => [
+            'sources'     =>
+                [
+                    'scripts' => ['bower_components/jquery/dist/jquery.min.js'],
+                ],
+            'dependency' => []
+        ],
+        'bootstrap' => [
+            'sources'     =>
+                [
+                    'scripts' => ['bower_components/bootstrap/dist/js/bootstrap.min.js'],
+                    'style'   => [
+                        'bower_components/bootstrap/dist/css/bootstrap.min.css',
+                        'bower_components/bootstrap/dist/css/bootstrap-theme.min.css'
+                    ]
+                ],
+            'dependency' => ['jquery']
+        ],
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -28,13 +49,12 @@ return array(
     |
     */
 
-    'events' => array(
+    'events' => [
 
         // Before event inherit from package config and the theme that call before,
         // you can use this event to set meta, breadcrumb template or anything
         // you want inheriting.
-        'before' => function($theme)
-        {
+        'before'             => function ($theme) {
             // You can remove this line anytime.
             $theme->setTitle('Copyright ©  2013 - Laravel.in.th');
 
@@ -55,8 +75,7 @@ return array(
         // Listen on event before render a theme,
         // this event should call to assign some assets,
         // breadcrumb template.
-        'beforeRenderTheme' => function($theme)
-        {
+        'beforeRenderTheme'  => function ($theme) {
             // You may use this event to set up your assets.
             // $theme->asset()->usePath()->add('core', 'core.js');
             // $theme->asset()->add('jquery', 'vendor/jquery/jquery.min.js');
@@ -71,15 +90,14 @@ return array(
 
         // Listen on event before render a layout,
         // this should call to assign style, script for a layout.
-        'beforeRenderLayout' => array(
+        'beforeRenderLayout' => [
 
-            'default' => function($theme)
-            {
+            'default' => function ($theme) {
                 // $theme->asset()->usePath()->add('ipad', 'css/layouts/ipad.css');
             }
 
-        )
+        ]
 
-    )
+    ]
 
-);
+];

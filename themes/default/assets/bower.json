@@ -1,0 +1,21 @@
+{
+  "name": "IzCore",
+  "homepage": "https://github.com/vjcspy/IzCore",
+  "authors": [
+    "vjcspy <mr.vjcspy@gmail.com>"
+  ],
+  "description": "Script and Style of IzCore Module",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.4",
+    "bootstrap": "^3.3.6"
+  }
+}
