@@ -16,6 +16,8 @@
   ],
   "dependencies": {
     "jquery": "^2.2.4",
-    "bootstrap": "^3.3.6"
+    "bootstrap": "^3.3.6",
+    "components-font-awesome": "^4.6.3",
+    "lodash": "^4.13.1"
   }
 }
