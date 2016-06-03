@@ -76,7 +76,7 @@ class PublishConfigCommand extends Command {
                 if (!file_exists($currentThemeDir))
                     continue;
 
-                $this->output->success('Copy theme in module: ' . $moduleDir);
+                $this->output->success('Copy themes in module: ' . $moduleDir);
 
                 $this->recurseCopy($currentThemeDir, public_path() . '/modules/themes');
             }
