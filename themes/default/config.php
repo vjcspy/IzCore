@@ -10,6 +10,20 @@ return [
                 ],
             'dependency' => []
         ],
+        'lodash'    => [
+            'sources'     =>
+                [
+                    'scripts' => ['bower_components/lodash/dist/lodash.min.js'],
+                ],
+            'dependency' => []
+        ],
+        'components-font-awesome'    => [
+            'sources'     =>
+                [
+                    'styles' => ['bower_components/components-font-awesome/css/font-awesome.min.css'],
+                ],
+            'dependency' => []
+        ],
         'bootstrap' => [
             'sources'     =>
                 [
