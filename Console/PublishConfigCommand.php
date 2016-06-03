@@ -76,6 +76,8 @@ class PublishConfigCommand extends Command {
                 if (!file_exists($currentThemeDir))
                     continue;
 
+                $this->output->success('Copy theme in module: ' . $moduleDir);
+
                 $this->recurseCopy($currentThemeDir, public_path() . '/modules/themes');
             }
         }
@@ -115,7 +117,7 @@ class PublishConfigCommand extends Command {
                     $s = $src . '/' . $file;
                     $d = $dst . '/' . $file;
                     copy($s, $d);
-                    $this->output->success('Copy file: ' . $s);
+                    // $this->output->success('Copy file: ' . $s);
                 }
             }
         }
