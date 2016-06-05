@@ -162,13 +162,14 @@ class Asset extends DataObject {
 
     /**
      * Thêm asset vào controller hiện tại
+     * If not define current path, will add to all paths
      *
      * @param       $path
      * @param array $assets
      *
      * @return $this
      */
-    public function addAssets($path, array $assets) {
+    public function addAssets($path = 'all', array $assets) {
         if (!isset($this->assets[$path]))
             $this->assets[$path] = $assets;
         else
@@ -228,6 +229,12 @@ class Asset extends DataObject {
         else {
             $assets = isset($this->assets[$this->currentPath]) ? $this->assets[$this->currentPath] : [];
         }
+
+        /*
+         * Add assets in all paths
+         */
+        if (isset($this->assets['all']))
+            $assets = array_merge($assets, $this->assets['all']);
 
         // Lấy thêm assets từ các modules khác
         $this->initAdditionAssets($this->currentPath);
