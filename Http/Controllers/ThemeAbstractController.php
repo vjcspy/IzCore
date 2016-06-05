@@ -123,8 +123,10 @@ abstract class ThemeAbstractController extends Controller {
      *
      * @return $this
      */
-    protected function addAssets($assets) {
-        $this->izAsset->addAssets($this->request->path(), $assets);
+    protected function addAssets($assets, $path = null) {
+        if (is_null($path))
+            $path = $this->request->path();
+        $this->izAsset->addAssets($path, $assets);
 
         return $this;
     }
