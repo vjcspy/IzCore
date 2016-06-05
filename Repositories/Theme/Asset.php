@@ -162,7 +162,7 @@ class Asset extends DataObject {
 
     /**
      * Add assets to current path
-     * Notice: assets must defind in bower_components. If custom assets please use function: addCustomAssets
+     * Notice: assets must defind in BOWER_COMPONENTS. If custom assets please use function: addCustomAssets
      * If not define current path, will add to all paths
      *
      * @param       $path
@@ -181,7 +181,7 @@ class Asset extends DataObject {
     }
 
     /**
-     * Thêm custom assets in css or js not in bower
+     * ADD custom assets(css/js) It is not in BOWER_COMPONENTS
      *
      * @param       $path
      * @param array $customAssets
