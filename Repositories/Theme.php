@@ -128,6 +128,11 @@ class Theme extends DataObject {
         return $this;
     }
 
+    /**
+     * Get all assets in each theme in each module
+     * @return array
+     * @throws \Exception
+     */
     public function getAssetsTree() {
         if (is_null($this->assets)) {
             $this->assets = [];
