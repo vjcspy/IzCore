@@ -161,7 +161,8 @@ class Asset extends DataObject {
     }
 
     /**
-     * Thêm asset vào controller hiện tại
+     * Add assets to current path
+     * Notice: assets must defind in bower_components. If custom assets please use function: addCustomAssets
      * If not define current path, will add to all paths
      *
      * @param       $path
@@ -205,7 +206,9 @@ class Asset extends DataObject {
     }
 
     /**
-     * Thêm assets
+     * Call when render layout.
+     * Merger additions assets, 'all' assets, current assets
+     * Resolve dependency assets
      *
      * @param \Teepluss\Theme\Theme $theme
      *
@@ -281,7 +284,7 @@ class Asset extends DataObject {
          * */
         if (isset($this->customAssets[$currentPath])) {
             foreach ($this->customAssets[$currentPath] as $customAssetName => $customAsset) {
-                $theme->asset()->usePath(isset($customAsset['theme_name']) ? $customAsset['theme_name'] : null)
+                $theme->asset()->container('custom-assets')->usePath(isset($customAsset['theme_name']) ? $customAsset['theme_name'] : null)
                       ->add(
                           $customAssetName,
                           $customAsset['source'],
