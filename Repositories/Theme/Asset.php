@@ -9,7 +9,7 @@
 namespace Modules\IzCore\Repositories\Theme;
 
 
-use Modules\IzCore\Repositories\Module;
+use Modules\IzCore\Repositories\Module as IzModule;
 use Modules\IzCore\Repositories\Object\DataObject;
 use Modules\IzCore\Repositories\Theme as IzTheme;
 use Modules\IzCore\Repositories\Theme\Asset\AdditionAsset;
@@ -82,7 +82,7 @@ class Asset extends DataObject {
      */
     public function __construct(
         Repository $module,
-        Module $izModule,
+        IzModule $izModule,
         Dependency $izAssetDependency,
         IzTheme $izTheme,
         array $data = []
