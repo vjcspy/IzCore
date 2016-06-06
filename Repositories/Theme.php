@@ -11,7 +11,7 @@ namespace Modules\IzCore\Repositories;
 
 use Modules\IzCore\Repositories\Object\DataObject;
 use Modules\IzCore\Repositories\Theme\View\AdditionView;
-use Module;
+use Pingpong\Modules\Repository;
 
 class Theme extends DataObject {
 
@@ -36,6 +36,10 @@ class Theme extends DataObject {
      * @var array
      */
     protected $data = [];
+    /**
+     * @var \Pingpong\Modules\Repository
+     */
+    protected $module;
 
     /**
      * All Asset
@@ -44,7 +48,10 @@ class Theme extends DataObject {
      */
     private $assets;
 
-    public function __construct(array $data = []) {
+    public function __construct(
+        Repository $module,
+        array $data = []) {
+        $this->module = $module;
         parent::__construct($data);
     }
 
@@ -137,7 +144,7 @@ class Theme extends DataObject {
         if (is_null($this->assets)) {
             $this->assets = [];
 
-            $pathModules = Module::getPath();
+            $pathModules = $this->module->getPath();
             $moduleDirs  = scandir($pathModules);
             foreach ($moduleDirs as $moduleDir) {
                 if (!in_array($moduleDir, [".", ".."])) {
