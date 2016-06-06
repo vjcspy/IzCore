@@ -10,7 +10,6 @@ namespace Modules\IzCore\Repositories\Theme;
 
 use Modules\IzCore\Repositories\Module;
 use Pingpong\Modules\Repository;
-use Teepluss\Theme\Theme;
 use Modules\IzCore\Repositories\Object\DataObject;
 
 class View extends DataObject {
