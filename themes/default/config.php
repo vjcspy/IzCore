@@ -35,6 +35,15 @@ return [
                 ],
             'dependency' => ['jquery']
         ],
+        'animate-css'=> [
+            'sources'     =>
+                [
+                    'styles'   => [
+                        'bower_components/animate.css/animate.min.css'
+                    ]
+                ],
+            'dependency' => ['jquery']
+        ],
     ],
 
     /*
