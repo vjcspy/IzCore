@@ -51,21 +51,17 @@ abstract class ThemeAbstractController extends Controller {
     /**
      * @param \Teepluss\Theme\Contracts\Theme          $theme
      * @param \Illuminate\Http\Request                 $request
-     * @param \Modules\IzCore\Repositories\Theme\Asset $izAsset
-     * @param \Modules\IzCore\Repositories\Theme\View  $izView
      * @param \Modules\IzCore\Repositories\Theme       $izTheme
      */
     public function __construct(
         Theme $theme,
         Request $request,
-        Asset $izAsset,
-        View $izView,
         izTheme $izTheme
     ) {
         $this->theme   = $theme;
         $this->request = $request;
-        $this->izAsset = $izAsset;
-        $this->izView  = $izView;
+        $this->izAsset = app()['izAsset'];
+        $this->izView  = app()['izView'];
         $this->izTheme = $izTheme;
     }
 
