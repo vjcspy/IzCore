@@ -157,7 +157,7 @@ class Theme extends DataObject {
                             // Check file config.php existed
 
                             if (!file_exists($currentThemeDir))
-                                throw new \Exception('Not found file config.php in theme: ' . $themDir . ' module: ' . $moduleDir);
+                                continue;
 
                             $themeConfig = (include $currentThemeDir);
 
