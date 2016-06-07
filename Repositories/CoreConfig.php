@@ -52,9 +52,11 @@ class CoreConfig {
     /**
      * Get Config by $configName. Maybe all, frontend
      *
-     * @param string $configName
+     * @param string $configScopeName
      *
      * @return array
+     * @internal param string $configName
+     *
      */
     public function initConfig($configScopeName = 'all') {
         if (is_null($this->izConfigResolved)) {
