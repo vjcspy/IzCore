@@ -7,7 +7,8 @@
   "order": 0,
   "providers": [
     "Modules\\IzCore\\Providers\\IzCoreServiceProvider",
-    "Modules\\IzCore\\Providers\\IzThemeServiceProvider"
+    "Modules\\IzCore\\Providers\\IzThemeServiceProvider",
+    "Modules\\IzCore\\Providers\\IzConfigServiceProvider"
   ],
   "aliases": {},
   "files": [
