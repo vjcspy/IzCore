@@ -78,7 +78,7 @@ return array(
 	*/
 
 	'namespaces' => array(
-		'widget' => 'App\Widgets'
+		'widget' => 'Modules\IzWidget\Widgets'
  	),
 
 	/*
