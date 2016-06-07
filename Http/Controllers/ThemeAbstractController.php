@@ -42,16 +42,16 @@ abstract class ThemeAbstractController extends Controller {
     /**
      * @var $_viewData []
      */
-    protected $_viewData;
+    protected $_viewData = [];
     /**
      * @var \Modules\IzCore\Repositories\Theme
      */
     protected $izTheme;
 
     /**
-     * @param \Teepluss\Theme\Contracts\Theme          $theme
-     * @param \Illuminate\Http\Request                 $request
-     * @param \Modules\IzCore\Repositories\Theme       $izTheme
+     * @param \Teepluss\Theme\Contracts\Theme    $theme
+     * @param \Illuminate\Http\Request           $request
+     * @param \Modules\IzCore\Repositories\Theme $izTheme
      */
     public function __construct(
         Theme $theme,
