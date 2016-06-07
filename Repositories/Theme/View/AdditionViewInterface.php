@@ -9,7 +9,7 @@
 namespace Modules\IzCore\Repositories\Theme\View;
 
 
-interface AdditionView {
+interface AdditionViewInterface {
 
     /**
      * @return []

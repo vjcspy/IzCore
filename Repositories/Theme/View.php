@@ -106,7 +106,7 @@ class View extends DataObject {
         if ($path) {
             if (isset($this->viewsData[$path]))
                 foreach ($this->viewsData[$path] as $obj) {
-                    /** @var \Modules\IzCore\Repositories\Theme\View\AdditionView $obj */
+                    /** @var \Modules\IzCore\Repositories\Theme\View\AdditionViewInterface $obj */
                     $viewData = array_merge($viewData, $obj->handle());
                 }
         }
