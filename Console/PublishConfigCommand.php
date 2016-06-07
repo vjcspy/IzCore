@@ -81,6 +81,9 @@ class PublishConfigCommand extends Command {
                 $this->recurseCopy($currentThemeDir, public_path() . '/modules/themes');
             }
         }
+
+        /*--------------------------- Merger xml config instead copy ---------------------------*/
+
     }
 
     /**
@@ -123,4 +126,5 @@ class PublishConfigCommand extends Command {
         }
         closedir($dir);
     }
+
 }
