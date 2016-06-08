@@ -8,6 +8,7 @@
 
 namespace Modules\IzCore\Repositories\Theme;
 
+use Modules\IzCore\Repositories\IzXml;
 use Modules\IzCore\Repositories\Module;
 use Pingpong\Modules\Repository;
 use Modules\IzCore\Repositories\Object\DataObject;
@@ -39,6 +40,10 @@ class View extends DataObject {
      * @var array
      */
     protected $viewsData = [];
+    /**
+     * @var \Modules\IzCore\Repositories\IzXml
+     */
+    protected $izXml;
 
     /**
      * @return string | bool
@@ -49,13 +54,16 @@ class View extends DataObject {
      *
      * @param \Pingpong\Modules\Repository        $module
      * @param \Modules\IzCore\Repositories\Module $izModule
+     * @param \Modules\IzCore\Repositories\IzXml  $izXml
      * @param array                               $data
      */
     public function __construct(
         Repository $module,
         Module $izModule,
+        IzXml $izXml,
         array $data = []
     ) {
+        $this->izXml    = $izXml;
         $this->module   = $module;
         $this->izModule = $izModule;
         parent::__construct($data);
@@ -104,11 +112,32 @@ class View extends DataObject {
      */
     public function initAdditionViews(&$viewData, $path) {
         if ($path) {
+            $this->initViewDataFromXml($path);
             if (isset($this->viewsData[$path]))
                 foreach ($this->viewsData[$path] as $obj) {
                     /** @var \Modules\IzCore\Repositories\Theme\View\AdditionViewInterface $obj */
+                    $obj      = app()->make($obj);
                     $viewData = array_merge($viewData, $obj->handle());
                 }
+        }
+
+        return $this;
+    }
+
+    public function setLayout($layoutName) {
+        $this->setData('theme_layout', $layoutName);
+
+        return $this;
+    }
+
+    public function initViewDataFromXml($path) {
+        $xml = $this->izXml->getXmlByPath($this->getThemeLayout() . '_' . $path);
+        if (isset($xml['view_data'])) {
+            if (!isset($this->viewsData[$path]))
+                $this->viewsData[$path] = [];
+            foreach ($xml['view_data'] as $viewClass) {
+                $this->viewsData[$path][] = $viewClass['name'];
+            }
         }
 
         return $this;

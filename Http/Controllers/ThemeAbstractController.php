@@ -103,13 +103,13 @@ abstract class ThemeAbstractController extends Controller {
      *
      */
     public function renderHtml() {
-        $path = $this->request->path();
+        $path = str_replace("/", "_", $this->request->path());
 
         // get addition assets from another modules
         $this->izAsset->setTheme($this->theme)->setCurrentPath($path)->initAssets($this->theme);
 
         // merger view data from another modules
-        $this->izView->initAdditionViews($this->_viewData, $path);
+        $this->izView->setLayout($this->theme->getLayoutName())->initAdditionViews($this->_viewData, $path);
 
         // merge theme data from another modules
         $this->izTheme->initViewData($this->theme, $path);
@@ -117,7 +117,7 @@ abstract class ThemeAbstractController extends Controller {
         // get view name
         $viewFile = debug_backtrace()[1]['function'];
 
-        return $this->theme->scopeWithLayout(str_replace('/', '.', $path) . '.' . $viewFile, $this->_viewData)->render();
+        return $this->theme->scopeWithLayout(str_replace('/', '.', $this->request->path()) . '.' . $viewFile, $this->_viewData)->render();
     }
 
     /**

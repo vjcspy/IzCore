@@ -9,6 +9,7 @@
 namespace Modules\IzCore\Repositories\Theme;
 
 
+use Modules\IzCore\Repositories\IzXml;
 use Modules\IzCore\Repositories\Module as IzModule;
 use Modules\IzCore\Repositories\Object\DataObject;
 use Modules\IzCore\Repositories\Theme as IzTheme;
@@ -55,6 +56,7 @@ class Asset extends DataObject {
     protected $customAssets = [];
 
     /**
+     * ONLY BOWER_COMPONENTS
      * [
      * 'path' => ['asset']
      * ]
@@ -70,6 +72,7 @@ class Asset extends DataObject {
      * @var \Modules\IzCore\Repositories\Theme
      */
     protected $izTheme;
+    protected $izXml;
 
     /**
      * Asset constructor.
@@ -78,6 +81,7 @@ class Asset extends DataObject {
      * @param \Modules\IzCore\Repositories\Module                 $izModule
      * @param \modules\IzCore\Repositories\Theme\Asset\Dependency $izAssetDependency
      * @param \Modules\IzCore\Repositories\Theme                  $izTheme
+     * @param \Modules\IzCore\Repositories\IzXml                  $izXml
      * @param array                                               $data
      */
     public function __construct(
@@ -85,8 +89,10 @@ class Asset extends DataObject {
         IzModule $izModule,
         Dependency $izAssetDependency,
         IzTheme $izTheme,
+        IzXml $izXml,
         array $data = []
     ) {
+        $this->izXml             = $izXml;
         $this->module            = $module;
         $this->izModule          = $izModule;
         $this->izAssetDependency = $izAssetDependency;
@@ -132,6 +138,7 @@ class Asset extends DataObject {
 
     /**
      * Merge assets from another modules to current asset
+     * Include: assets added by provider OR assets added by XML
      *
      * @param                       $path
      *
@@ -143,16 +150,44 @@ class Asset extends DataObject {
             $path = $this->getCurrentPath();
 
         if ($path) {
-            /*TODO: inject assets */
+            if (!isset($this->assets[$path]))
+                $this->assets[$path] = [];
+
+            /*
+             * inject assets what added by Provider
+             * */
             if (isset($this->additionAssets[$path])) {
                 foreach ($this->additionAssets[$path] as $additionAssetClass) {
 
                     /** @var AdditionAsset $obj */
                     $obj = app()->make($additionAssetClass);
 
-                    $this->assets[$path] = array_merge($this->assets[$path], $obj->handle());
+                    $this->assets[$path] = array_unique(array_merge($this->assets[$path], $obj->handle()));
                 }
             }
+
+            /*
+             * Inject bower_components what added by xml
+             * */
+            $xmlPath = $this->theme->getLayoutName() . '_' . $path;
+            $xml     = $this->izXml->getXmlByPath($xmlPath);
+            if (isset($xml['bower_components'])) {
+                $bowerAssets = [];
+                foreach ($xml['bower_components'] as $bower_component) {
+                    $bowerAssets[] = $bower_component['name'];
+                }
+                $this->assets[$path] = array_unique(array_merge($this->assets[$path], $bowerAssets));
+            }
+            $xmlPath = 'all';
+            $xml     = $this->izXml->getXmlByPath($xmlPath);
+            if (isset($xml['bower_components'])) {
+                $bowerAssets = [];
+                foreach ($xml['bower_components'] as $bower_component) {
+                    $bowerAssets[] = $bower_component['name'];
+                }
+                $this->assets[$path] = array_unique(array_merge($this->assets[$path], $bowerAssets));
+            }
+
         }
         else
             throw new \Exception("Not found path");
@@ -223,25 +258,20 @@ class Asset extends DataObject {
             $theme = $this->getTheme();
 
         if (is_null($currentPath)) {
-            if ($this->currentPath) {
+            if ($this->currentPath)
                 $currentPath = $this->currentPath;
-                $assets      = isset($this->assets[$this->currentPath]) ? $this->assets[$this->currentPath] : [];
-            }
             else
                 throw new \Exception("Not found current path");
         }
-        else {
-            $assets = isset($this->assets[$this->currentPath]) ? $this->assets[$this->currentPath] : [];
-        }
-
-        /*
-         * Add assets in all paths
-         */
-        if (isset($this->assets['all']))
-            $assets = array_merge($assets, $this->assets['all']);
-
         // Lấy thêm assets từ các modules khác
-        $this->initAdditionAssets($this->currentPath);
+        $this->initAdditionAssets($currentPath);
+
+        $assets = isset($this->assets[$currentPath]) ? $this->assets[$currentPath] : [];
+
+        // Merge global asset
+        $assets = $this->mergeGlobalAssets($assets);
+
+        //Get All assets in modules, not just current assets in path because they are interdependent
 
         $moduleAssets = $this->izTheme->getAssetsTree();
 
@@ -283,9 +313,11 @@ class Asset extends DataObject {
         /*
          * Add custom asset to theme
          * */
+        // From Provider
         if (isset($this->customAssets[$currentPath])) {
             foreach ($this->customAssets[$currentPath] as $customAssetName => $customAsset) {
-                $theme->asset()->container('custom-assets')->usePath(isset($customAsset['theme_name']) ? $customAsset['theme_name'] : null)
+                $theme->asset()->container('custom-assets')->usePath(
+                    isset($customAsset['theme_name']) ? $customAsset['theme_name'] : $this->theme->getThemeName())
                       ->add(
                           $customAssetName,
                           $customAsset['source'],
@@ -294,6 +326,44 @@ class Asset extends DataObject {
             }
         }
 
+        // From XML
+        $xml = $this->izXml->getXmlByPath($this->theme->getLayoutName() . '_' . $currentPath);
+        if (isset($xml['custom_assets'])) {
+            foreach ($xml['custom_assets'] as $customAsset) {
+                $theme->asset()->container('custom-assets')->usePath(
+                    isset($customAsset['theme_name']) ? $customAsset['theme_name'] : $this->theme->getThemeName())
+                      ->add(
+                          $customAsset['name'],
+                          $customAsset['source'],
+                          isset($customAsset['dependency']) ? $customAsset['dependency'] : []
+                      );
+            }
+        }
+        $xml = $this->izXml->getXmlByPath('all');
+        if (isset($xml['custom_assets'])) {
+            foreach ($xml['custom_assets'] as $customAsset) {
+                $theme->asset()->container('custom-assets')->usePath(
+                    isset($customAsset['theme_name']) ? $customAsset['theme_name'] : $this->theme->getThemeName())
+                      ->add(
+                          $customAsset['name'],
+                          $customAsset['source'],
+                          isset($customAsset['dependency']) ? $customAsset['dependency'] : []
+                      );
+            }
+        }
+
+
         return $this;
+    }
+
+    /**
+     * Merge Global assets for BOWER_COMPONENTS
+     *
+     * @param $assets
+     *
+     * @return array
+     */
+    public function mergeGlobalAssets($assets) {
+        return isset($this->assets['all']) ? array_unique(array_merge($assets, $this->assets['all'])) : $assets;
     }
 }
