@@ -9,7 +9,8 @@
     "Modules\\IzCore\\Providers\\IzCoreServiceProvider",
     "Modules\\IzCore\\Providers\\IzThemeServiceProvider",
     "Modules\\IzCore\\Providers\\IzConfigServiceProvider",
-    "Modules\\IzCore\\Providers\\IzMenuServiceProvider"
+    "Modules\\IzCore\\Providers\\IzMenuServiceProvider",
+    "Modules\\IzCore\\Providers\\IzXmlServiceProvider"
   ],
   "aliases": {},
   "files": [

@@ -113,6 +113,9 @@ class IzXml extends IzObject {
                                     case 'view_data':
                                         $this->convertXmlScopeViewData($scope, $xmlFile);
                                         break;
+                                    case 'app_dependencies':
+                                        $this->convertXmlScopeAppDependency($scope, $xmlFile);
+                                        break;
                                 }
                             }
                         }
@@ -183,6 +186,28 @@ class IzXml extends IzObject {
                 $itemsAttribute[$attrName] = (string)$attrValue;
             }
             $this->xmlThemeData[$xmlFile]['view_data'][] = $itemsAttribute;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param $xml
+     * @param $xmlFile
+     * @param $node
+     *
+     * @return $this
+     */
+    private function convertXmlScopeAppDependency($xml, $xmlFile) {
+        if (!isset($this->xmlThemeData[$xmlFile]['app_dependencies']))
+            $this->xmlThemeData[$xmlFile]['app_dependencies'] = [];
+
+        foreach ($xml->dependency as $item) {
+            $itemsAttribute = [];
+            foreach ($item->attributes() as $attrName => $attrValue) {
+                $itemsAttribute[$attrName] = (string)$attrValue;
+            }
+            $this->xmlThemeData[$xmlFile]['app_dependencies'][] = $itemsAttribute;
         }
 
         return $this;
