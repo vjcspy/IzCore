@@ -335,7 +335,7 @@ class Asset extends DataObject {
                       ->add(
                           $customAsset['name'],
                           $customAsset['source'],
-                          isset($customAsset['dependency']) ? $customAsset['dependency'] : []
+                          isset($customAsset['dependency']) ? explode(',', $customAsset['dependency']) : []
                       );
             }
         }
@@ -347,7 +347,7 @@ class Asset extends DataObject {
                       ->add(
                           $customAsset['name'],
                           $customAsset['source'],
-                          isset($customAsset['dependency']) ? $customAsset['dependency'] : []
+                          isset($customAsset['dependency']) ? explode(',', $customAsset['dependency']) : []
                       );
             }
         }
