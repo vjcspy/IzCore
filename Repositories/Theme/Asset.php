@@ -150,7 +150,7 @@ class Asset extends DataObject {
                     /** @var AdditionAsset $obj */
                     $obj = app()->make($additionAssetClass);
 
-                    $this->assets = array_merge($this->assets, $obj->handle());
+                    $this->assets[$path] = array_merge($this->assets[$path], $obj->handle());
                 }
             }
         }
@@ -162,8 +162,9 @@ class Asset extends DataObject {
 
     /**
      * Add assets to current path
-     * Notice: assets must defind in BOWER_COMPONENTS. If custom assets please use function: addCustomAssets
+     * Notice: assets must define in BOWER_COMPONENTS. If custom assets please use function: addCustomAssets
      * If not define current path, will add to all paths
+     * Call from controller
      *
      * @param       $path
      * @param array $assets

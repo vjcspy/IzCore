@@ -10,6 +10,7 @@ namespace Modules\IzCore\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\IzCore\Repositories\IzXml;
 use Modules\IzCore\Repositories\Theme as izTheme;
 use Modules\IzCore\Repositories\Theme\Asset;
 use Modules\IzCore\Repositories\Theme\View;
@@ -47,22 +48,29 @@ abstract class ThemeAbstractController extends Controller {
      * @var \Modules\IzCore\Repositories\Theme
      */
     protected $izTheme;
+    /**
+     * @var \Modules\IzCore\Repositories\IzXml
+     */
+    protected $izXml;
 
     /**
      * @param \Teepluss\Theme\Contracts\Theme    $theme
      * @param \Illuminate\Http\Request           $request
      * @param \Modules\IzCore\Repositories\Theme $izTheme
+     * @param \Modules\IzCore\Repositories\IzXml $izXml
      */
     public function __construct(
         Theme $theme,
         Request $request,
-        izTheme $izTheme
+        izTheme $izTheme,
+        IzXml $izXml
     ) {
         $this->theme   = $theme;
         $this->request = $request;
         $this->izAsset = app()['izAsset'];
         $this->izView  = app()['izView'];
         $this->izTheme = $izTheme;
+        $this->izXml   = $izXml;
     }
 
     /**
@@ -98,7 +106,7 @@ abstract class ThemeAbstractController extends Controller {
         $path = $this->request->path();
 
         // get addition assets from another modules
-        $this->izAsset->setTheme($this->theme)->setCurrentPath($path)->initAdditionAssets()->initAssets($this->theme);
+        $this->izAsset->setTheme($this->theme)->setCurrentPath($path)->initAssets($this->theme);
 
         // merger view data from another modules
         $this->izView->initAdditionViews($this->_viewData, $path);
@@ -149,6 +157,15 @@ abstract class ThemeAbstractController extends Controller {
         return $this;
     }
 
+    /**
+     * Wrap functin addCustomAssets from izAsset
+     * For add assets not in bower_components
+     *
+     * @param $customAssets
+     *
+     * @return $this
+     * @throws \Exception
+     */
     protected function addCustomAssets($customAssets) {
         $this->izAsset->addCustomAssets($this->request->path(), $customAssets);
 
