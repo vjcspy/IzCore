@@ -58,6 +58,18 @@ class IzMenu extends DataObject {
     }
 
     /**
+     * @param       $menuName
+     * @param array $menu
+     *
+     * @return $this
+     */
+    public function setMenu($menuName, array $menu) {
+        $this->menus[$menuName] = $menu;
+
+        return $this;
+    }
+
+    /**
      * Get Menu by name
      *
      * @param $menuName
@@ -68,5 +80,23 @@ class IzMenu extends DataObject {
         $menu = isset($this->menus[$menuName]) ? $this->menus[$menuName] : [];
 
         return $this->izCoreHelper->arrangeAscArrayByPriority($menu);
+    }
+
+    /**
+     * Retrieve position of parent which have name match
+     *
+     * @param $menu
+     * @param $parentName
+     *
+     * @return bool|int|string
+     */
+    public function getParentNamePosition($menu, $parentName) {
+        foreach ($menu as $position => $parent) {
+            if ($parent['name_id'] == $parentName) {
+                return $position;
+            }
+        }
+
+        return false;
     }
 }
