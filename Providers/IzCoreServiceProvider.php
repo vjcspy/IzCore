@@ -128,7 +128,6 @@ class IzCoreServiceProvider extends ServiceProvider {
 
     public function registerDependencyLibrary() {
         $this->app->register('\Teepluss\Theme\ThemeServiceProvider');
-        $this->app->register('\Pingpong\Menus\MenusServiceProvider');
         $this->app->register('\Intervention\Image\ImageServiceProvider');
     }
 
