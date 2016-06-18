@@ -16,7 +16,8 @@
     "composer/installers": "^1.0",
     "intervention/image": "^2.3",
     "intervention/imagecache": "^2.3",
-    "guzzlehttp/guzzle": "~6.0"
+    "guzzlehttp/guzzle": "~6.0",
+    "nesbot/carbon": "^1.21"
 
   },
   "autoload": {
