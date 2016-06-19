@@ -21,7 +21,7 @@ trait ImageUpload {
 
     public function postUpload(Request $request) {
         $this->Image = app()['image'];
-        
+
         //get file:
         $file       = $request->file('file');
         $image_name = $file->getClientOriginalName();
@@ -56,4 +56,19 @@ trait ImageUpload {
     public function getUpload() {
         return Response::json([], 204);
     }
+
+    /**
+     * @return mixed
+     */
+    public function getImageFolder() {
+        return $this->_imageFolder;
+    }
+
+    /**
+     * @param mixed $imageFolder
+     */
+    public function setImageFolder($imageFolder) {
+        $this->_imageFolder = $imageFolder;
+    }
+
 }
