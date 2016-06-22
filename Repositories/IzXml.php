@@ -55,7 +55,9 @@ class IzXml extends IzObject {
      * @return mixed
      */
     public function getXmlByPath($path) {
-        $key = $this->getKey(['xml', 'layout_router_action', $path]);
+        // see https://github.com/vjcspy/IzCore/issues/1
+        $key = $this->getKey(['xml', 'NOT_dependency', 'layout_router_action', 'ANY_MORE', $path]);
+
         if (is_null($this->getData($key))) {
             /*Get dir path of modules*/
             $this->setData($key, isset($this->scanThemeXml()[$path]) ? $this->scanThemeXml()[$path] : []);
@@ -217,7 +219,10 @@ class IzXml extends IzObject {
      * @return string
      */
     public function getCurrentTheme() {
-        return 'admin.default';
+        /** @var Theme $izTheme */
+        $izTheme = app()['izTheme'];
+
+        return $izTheme->getTheme()->getThemeName();
     }
 
 }

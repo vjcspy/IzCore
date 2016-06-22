@@ -13,6 +13,14 @@ use Modules\IzCore\Repositories\Object\DataObject;
 use Modules\IzCore\Repositories\Theme\View\AdditionViewInterface;
 use Pingpong\Modules\Repository;
 
+/**
+ * Quản lý Theme
+ * Bao gồm:
+ * - Data của theme: Merge data từ bên ngoài
+ * - Quản lý current theme
+ *
+ * @package Modules\IzCore\Repositories
+ */
 class Theme extends DataObject {
 
     /**
@@ -27,6 +35,21 @@ class Theme extends DataObject {
      * @var array
      */
     protected $additionData = [];
+
+    /**
+     * @var \Teepluss\Theme\Contracts\Theme
+     */
+    protected $theme;
+
+    /**
+     * @var string
+     */
+    protected $_currentThemeName;
+
+    /**
+     * @var string
+     */
+    protected $_currentLayoutName;
 
     /**
      * [
@@ -48,10 +71,18 @@ class Theme extends DataObject {
      */
     private $assets;
 
+    /**
+     * Theme constructor.
+     *
+     * @param \Pingpong\Modules\Repository $module
+     * @param array                        $data
+     */
     public function __construct(
         Repository $module,
+        \Teepluss\Theme\Contracts\Theme $theme,
         array $data = []
     ) {
+        $this->theme  = $theme;
         $this->module = $module;
         parent::__construct($data);
     }
@@ -187,4 +218,53 @@ class Theme extends DataObject {
 
         return $this->assets;
     }
+
+    /**
+     * Retrieve current theme name
+     *
+     * @return string
+     */
+    public function getCurrentThemeName() {
+        return $this->_currentThemeName;
+    }
+
+    /**
+     * @param string $currentThemeName
+     *
+     * @return $this
+     */
+    public function setCurrentThemeName($currentThemeName) {
+        $this->_currentThemeName = $currentThemeName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrentLayoutName() {
+        return $this->_currentLayoutName;
+    }
+
+    /**
+     * Retrive current layout use in theme
+     *
+     * @param string $currentLayoutName
+     *
+     * @return $this
+     */
+    public function setCurrentLayoutName($currentLayoutName) {
+        $this->_currentLayoutName = $currentLayoutName;
+
+        return $this;
+    }
+
+    /**
+     * @return \Teepluss\Theme\Theme
+     * @throws \Exception
+     */
+    public function getTheme() {
+        return $this->theme;
+    }
+
 }

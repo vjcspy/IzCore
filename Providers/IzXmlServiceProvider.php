@@ -21,7 +21,7 @@ class IzXmlServiceProvider extends ServiceProvider {
     public function register() {
         // TODO: Implement register() method.
         $this->app->singleton(
-            'IzXml',
+            'izXml',
             function ($app) {
                 return $app->make('\Modules\IzCore\Repositories\IzXml');
             });

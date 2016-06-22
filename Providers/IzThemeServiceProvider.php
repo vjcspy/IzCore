@@ -30,5 +30,10 @@ class IzThemeServiceProvider extends ServiceProvider {
             function ($app) {
                 return $app->make('Modules\IzCore\Repositories\Theme\View');
             });
+        $this->app->singleton(
+            'izTheme',
+            function ($app) {
+                return $app->make('Modules\IzCore\Repositories\Theme');
+            });
     }
 }

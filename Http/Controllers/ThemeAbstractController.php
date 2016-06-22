@@ -10,11 +10,9 @@ namespace Modules\IzCore\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\IzCore\Repositories\IzXml;
 use Modules\IzCore\Repositories\Theme as izTheme;
 use Modules\IzCore\Repositories\Theme\Asset;
 use Modules\IzCore\Repositories\Theme\View;
-use Teepluss\Theme\Contracts\Theme;
 
 /**
  * Class ThemeAbstractController
@@ -54,23 +52,18 @@ abstract class ThemeAbstractController extends Controller {
     protected $izXml;
 
     /**
-     * @param \Teepluss\Theme\Contracts\Theme    $theme
-     * @param \Illuminate\Http\Request           $request
-     * @param \Modules\IzCore\Repositories\Theme $izTheme
-     * @param \Modules\IzCore\Repositories\IzXml $izXml
+     * @param \Illuminate\Http\Request $request
+     *
      */
     public function __construct(
-        Theme $theme,
-        Request $request,
-        izTheme $izTheme,
-        IzXml $izXml
+        Request $request
     ) {
-        $this->theme   = $theme;
         $this->request = $request;
         $this->izAsset = app()['izAsset'];
         $this->izView  = app()['izView'];
-        $this->izTheme = $izTheme;
-        $this->izXml   = $izXml;
+        $this->izTheme = app()['izTheme'];
+        $this->izXml   = app()['izXml'];;
+        $this->theme = app()['izTheme']->getTheme();
     }
 
     /**
