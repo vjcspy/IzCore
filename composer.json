@@ -18,7 +18,8 @@
     "intervention/imagecache": "^2.3",
     "guzzlehttp/guzzle": "~6.0",
     "nesbot/carbon": "^1.21",
-    "baum/baum": "~1.1"
+    "baum/baum": "~1.1",
+    "fzaninotto/faker": "^1.6"
 
   },
   "autoload": {
