@@ -4,9 +4,11 @@ namespace Modules\IzCore\Repositories;
 use Modules\IzCore\Repositories\CoreConfig\ConfigInterface;
 
 /**
- * Class IzAdminConfigProvider
- * Generate config to iz admin app and frontend
- * Have 3 path: global, admin, frontend.
+ * Class CoreConfig
+ * Generate config to iz admin app and frontend.
+ * Nhiem vu chinh la dua du lieu tu Model ra Javascript
+ *
+ * Co 3 path: global, admin, frontend.
  * In Admin include 3 path, but in frontend just have: global and frontend
  *
  * @package Modules\IzCore\Respositories
@@ -79,7 +81,7 @@ class CoreConfig {
             if (isset($this->izConfigResolved['fronted']))
                 $data['frontend'] = $this->izConfigResolved['fronted'];
             if (isset($this->izConfigResolved['global']))
-                $data['frontend'] = $this->izConfigResolved['global'];
+                $data['global'] = $this->izConfigResolved['global'];
 
             return $data;
         }
