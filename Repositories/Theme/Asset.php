@@ -169,7 +169,7 @@ class Asset extends DataObject {
             /*
              * Inject bower_components what added by xml
              * */
-            $xmlPath = $this->theme->getLayoutName() . '_' . $path;
+            $xmlPath = $this->theme->getLayoutName();
             $xml     = $this->izXml->getXmlByPath($xmlPath);
             if (isset($xml['bower_components'])) {
                 $bowerAssets = [];
@@ -310,9 +310,8 @@ class Asset extends DataObject {
             }
         }
 
-        /*
-         * Add custom asset to theme
-         * */
+         // * --------------------------- Add custom asset to theme ---------------------------
+
         // From Provider
         if (isset($this->customAssets[$currentPath])) {
             foreach ($this->customAssets[$currentPath] as $customAssetName => $customAsset) {
@@ -327,7 +326,7 @@ class Asset extends DataObject {
         }
 
         // From XML
-        $xml = $this->izXml->getXmlByPath($this->theme->getLayoutName() . '_' . $currentPath);
+        $xml = $this->izXml->getXmlByPath($this->theme->getLayoutName());
         if (isset($xml['custom_assets'])) {
             foreach ($xml['custom_assets'] as $customAsset) {
                 $theme->asset()->container('custom-assets')->usePath(
