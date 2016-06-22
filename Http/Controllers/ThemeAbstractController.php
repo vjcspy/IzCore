@@ -52,6 +52,12 @@ abstract class ThemeAbstractController extends Controller {
     protected $izXml;
 
     /**
+     * Path view
+     * @var string
+     */
+    protected $_viewFile;
+
+    /**
      * @param \Illuminate\Http\Request $request
      *
      */
@@ -60,9 +66,9 @@ abstract class ThemeAbstractController extends Controller {
     ) {
         $this->request = $request;
         $this->izAsset = app()['izAsset'];
-        $this->izView  = app()['izView'];
+        $this->izView = app()['izView'];
         $this->izTheme = app()['izTheme'];
-        $this->izXml   = app()['izXml'];;
+        $this->izXml = app()['izXml'];;
         $this->theme = app()['izTheme']->getTheme();
     }
 
@@ -108,9 +114,11 @@ abstract class ThemeAbstractController extends Controller {
         $this->izTheme->initViewData($this->theme, $path);
 
         // get view name
-        $viewFile = debug_backtrace()[1]['function'];
-
-        return $this->theme->scopeWithLayout(str_replace('/', '.', $this->request->path()) . '.' . $viewFile, $this->_viewData)->render();
+        if (is_null($this->getViewFile())) {
+            $viewFile = debug_backtrace()[1]['function'];
+            $this->setViewFile(str_replace('/', '.', $this->request->path()) . '.' . $viewFile);
+        }
+        return $this->theme->scopeWithLayout($this->getViewFile(), $this->_viewData)->render();
     }
 
     /**
@@ -161,6 +169,23 @@ abstract class ThemeAbstractController extends Controller {
      */
     protected function addCustomAssets($customAssets) {
         $this->izAsset->addCustomAssets($this->request->path(), $customAssets);
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getViewFile() {
+        return $this->_viewFile;
+    }
+
+    /**
+     * @param string $viewFile
+     * @return $this
+     */
+    public function setViewFile($viewFile) {
+        $this->_viewFile = $viewFile;
 
         return $this;
     }
