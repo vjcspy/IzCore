@@ -2,6 +2,11 @@
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * AppConfig la nhung config data ma chi app su dung. Khong co config cho nguoi dung.
+ * De su dung config cho nguoi dung thi su dung user_config
+ * @package Modules\Izcore\Entities
+ */
 class AppConfig extends Model {
 
     protected $table    = 'izcore_app_config';
