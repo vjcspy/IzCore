@@ -55,7 +55,6 @@ class CoreConfig {
      * @param string $configScopeName
      *
      * @return array
-     * @internal param string $configName
      *
      */
     public function initConfig($configScopeName = 'all') {
