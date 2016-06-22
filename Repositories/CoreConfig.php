@@ -27,12 +27,12 @@ class CoreConfig {
      * Each config name can have multiple config. Will merger by priority
      *
      * @param        $className
-     * @param string $configName
-     *
-     * @param int    $priority
-     *
+     * @param string $configScopeName
+     * @param int $priority
      * @return $this
      * @throws \Exception
+     * @internal param string $configName
+     *
      */
     public function addConfigProvider($className, $configScopeName = 'global', $priority = 0) {
         if (!in_array($configScopeName, ['global', 'frontend', 'admin'])) {
@@ -50,7 +50,7 @@ class CoreConfig {
     }
 
     /**
-     * Get Config by $configName. Maybe all, frontend
+     * Get Config by $configName. Maybe all or frontend
      *
      * @param string $configScopeName
      *
