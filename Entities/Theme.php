@@ -16,8 +16,8 @@ namespace Modules\IzCore\Entities;
  */
 class Theme extends \Illuminate\Database\Eloquent\Model {
 
-    const TYPE_ADMIN = 'admin.theme';
-    const TYPE_FRONTEND = 'admin.frontend';
+    const TYPE_ADMIN = 1;
+    const TYPE_FRONTEND = 2;
 
     /**
      * @var string

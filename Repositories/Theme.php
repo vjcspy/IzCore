@@ -70,6 +70,10 @@ class Theme extends DataObject {
      * @var
      */
     private $assets;
+    /**
+     * @var \Modules\IzCore\Entities\Theme
+     */
+    private $themeModel;
 
     /**
      * Theme constructor.
@@ -79,11 +83,13 @@ class Theme extends DataObject {
      */
     public function __construct(
         Repository $module,
+        \Modules\IzCore\Entities\Theme $themeModel,
         \Teepluss\Theme\Contracts\Theme $theme,
         array $data = []
     ) {
-        $this->theme  = $theme;
-        $this->module = $module;
+        $this->themeModel = $themeModel;
+        $this->theme      = $theme;
+        $this->module     = $module;
         parent::__construct($data);
     }
 
@@ -265,6 +271,24 @@ class Theme extends DataObject {
      */
     public function getTheme() {
         return $this->theme;
+    }
+
+    /**
+     * Khai báo sự tồn tại của theme trong App
+     * Sử dụng để biết view thuộc theme nào. Loại admin hay frontend
+     *
+     * @param      $themeName
+     * @param bool $isAdmin
+     *
+     * @return $this
+     */
+    public function registerTheme($themeName, $isAdmin = true) {
+        /* FIXME: need cache here */
+        $theme       = $this->themeModel->query()->firstOrNew(['name' => $themeName]);
+        $theme->type = $isAdmin == true ? \Modules\IzCore\Entities\Theme::TYPE_ADMIN : \Modules\IzCore\Entities\Theme::TYPE_FRONTEND;
+        $theme->save();
+
+        return $this;
     }
 
 }
