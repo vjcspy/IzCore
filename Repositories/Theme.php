@@ -231,6 +231,9 @@ class Theme extends DataObject {
      * @return string
      */
     public function getCurrentThemeName() {
+        if (is_null($this->_currentThemeName))
+            $this->_currentThemeName = $this->getTheme()->getThemeName();
+
         return $this->_currentThemeName;
     }
 
@@ -249,6 +252,9 @@ class Theme extends DataObject {
      * @return string
      */
     public function getCurrentLayoutName() {
+        if (is_null($this->_currentLayoutName))
+            $this->_currentLayoutName = $this->getTheme()->getLayoutName();
+
         return $this->_currentLayoutName;
     }
 
