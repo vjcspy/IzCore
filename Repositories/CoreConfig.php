@@ -33,7 +33,6 @@ class CoreConfig {
      * @param int $priority
      * @return $this
      * @throws \Exception
-     * @internal param string $configName
      *
      */
     public function addConfigProvider($className, $configScopeName = 'global', $priority = 0) {
