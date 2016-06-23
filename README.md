@@ -1,7 +1,12 @@
 # IzCore
 
+#Theme
+1. Để sử dụng 1 theme?
+- Tạo thư mục theme tương tự như module IzAdmin
+- Khai báo theme ở Service izTheme bằng method registerTheme()
+
 ----------------------------------------
-# Theme data
+2. Theme data
 Gọi bất cứ ở đâu trong view
 Theme::get('foo');
 
