@@ -73,6 +73,7 @@ class IzXml extends IzObject {
      * @return mixed
      */
     protected function scanThemeXml() {
+        /*FIXME: need cache xml*/
         $key = $this->getKey(['retrieve', 'all-xml', 'in', 'all-modules', 'only', 'current-theme']);
         if (is_null($this->getData($key))) {
             $pathModules       = $this->module->getPath();
