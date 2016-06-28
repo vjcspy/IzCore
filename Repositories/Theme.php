@@ -79,17 +79,15 @@ class Theme extends DataObject {
      * Theme constructor.
      *
      * @param \Pingpong\Modules\Repository $module
-     * @param array                        $data
+     * @param array $data
      */
     public function __construct(
         Repository $module,
         \Modules\IzCore\Entities\Theme $themeModel,
-        \Teepluss\Theme\Contracts\Theme $theme,
         array $data = []
     ) {
         $this->themeModel = $themeModel;
-        $this->theme      = $theme;
-        $this->module     = $module;
+        $this->module = $module;
         parent::__construct($data);
     }
 
@@ -185,7 +183,7 @@ class Theme extends DataObject {
             $this->assets = [];
 
             $pathModules = $this->module->getPath();
-            $moduleDirs  = scandir($pathModules);
+            $moduleDirs = scandir($pathModules);
             foreach ($moduleDirs as $moduleDir) {
                 if (!in_array($moduleDir, [".", ".."])) {
                     /*Path Config/Vendor của module hiện tại*/
@@ -211,7 +209,7 @@ class Theme extends DataObject {
                             if (isset($themeConfig['assets'])) {
                                 $assetWithThemeName = [];
                                 foreach ($themeConfig['assets'] as $k => $asset) {
-                                    $asset['theme_name']    = $themDir;
+                                    $asset['theme_name'] = $themDir;
                                     $assetWithThemeName[$k] = $asset;
                                 }
                                 $this->assets = array_merge($this->assets, $assetWithThemeName);
@@ -276,6 +274,9 @@ class Theme extends DataObject {
      * @throws \Exception
      */
     public function getTheme() {
+        if (is_null($this->theme)) {
+            $this->theme = app()->make('\Teepluss\Theme\Contracts\Theme');
+        };
         return $this->theme;
     }
 
@@ -290,7 +291,7 @@ class Theme extends DataObject {
      */
     public function registerTheme($themeName, $isAdmin = true) {
         /* FIXME: need cache here */
-        $theme       = $this->themeModel->query()->firstOrNew(['name' => $themeName]);
+        $theme = $this->themeModel->query()->firstOrNew(['name' => $themeName]);
         $theme->type = $isAdmin == true ? \Modules\IzCore\Entities\Theme::TYPE_ADMIN : \Modules\IzCore\Entities\Theme::TYPE_FRONTEND;
         $theme->save();
 
