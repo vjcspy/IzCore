@@ -131,7 +131,7 @@ class View extends DataObject {
     }
 
     public function initViewDataFromXml($path) {
-        $xml = $this->izXml->getXmlByPath($this->getThemeLayout() . '_' . $path);
+        $xml = $this->izXml->getXmlByPath($this->getThemeLayout());
         if (isset($xml['view_data'])) {
             if (!isset($this->viewsData[$path]))
                 $this->viewsData[$path] = [];
