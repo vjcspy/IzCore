@@ -54,7 +54,8 @@ return array(
         'small' => 'Intervention\Image\Templates\Small',
         'medium' => 'Intervention\Image\Templates\Medium',
         'large' => 'Intervention\Image\Templates\Large',
-        'small_article' => 'Modules\IzCore\Repositories\ImageCache\ArticleSmallImageFilter'
+        'small_article' => 'Modules\IzCore\Repositories\ImageCache\ArticleSmallImageFilter',
+        'title_article' => 'Modules\IzCore\Repositories\ImageCache\ArticleTitleImage'
     ),
 
     /*
